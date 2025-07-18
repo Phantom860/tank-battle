@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1a1a1a;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: white;
+}
+
+#gameContainer {
+    position: relative;
+    border: 2px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#gameCanvas {
+    background-color: #1a1a1a;
+    display: block;
+    border: 1px solid #333;
+}
+
+#gameUI {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+#gameUI > div {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#gameUI > div:last-child {
+    margin-right: 0;
+}
+
+#health {
+    color: #ff4444;
+}
+
+#score {
+    color: #44ff44;
+}
+
+#lives {
+    color: #4444ff;
+}
+
+#level {
+    color: #ffff44;
+}
