@@ -7,13 +7,33 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div id="gameContainer">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="gameUI">
-            <div id="score">Score: 0</div>
-            <div id="health">Health: 100</div>
-            <div id="lives">Lives: 3</div>
-            <div id="level">Level: 1</div>
+    <div class="main-container">
+        <div id="gameContainer">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            <div id="gameUI">
+                <div id="score">Score: 0</div>
+                <div id="health">Health: 100</div>
+                <div id="lives">Lives: 3</div>
+                <div id="level">Level: 1</div>
+            </div>
+        </div>
+        
+        <div id="externalUI">
+            <div id="minimapContainer">
+                <h3>小地图</h3>
+                <canvas id="minimapCanvas" width="150" height="150"></canvas>
+            </div>
+            <div id="controlsContainer">
+                <h3>操作说明</h3>
+                <p>WASD: 移动坦克</p>
+                <p>空格键: 发射子弹</p>
+                <p>ESC: 暂停游戏</p>
+                <p>方向键也可控制移动</p>
+            </div>
+            <div id="powerupsContainer">
+                <h3>道具效果</h3>
+                <div id="activePowerups">无激活道具</div>
+            </div>
         </div>
     </div>
 

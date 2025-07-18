@@ -106,43 +106,55 @@ class UI {
         if (Object.keys(player.powerUps).length === 0) return;
 
         ctx.save();
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        ctx.font = '14px Arial';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        // 移到地图上方显示
+        ctx.fillRect(10, GAME_CONFIG.CANVAS_HEIGHT - 190, 120, 25 + Object.keys(player.powerUps).length * 15);
+        
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.font = '12px Arial';
         ctx.textAlign = 'left';
 
-        let y = 100;
+        let y = GAME_CONFIG.CANVAS_HEIGHT - 175;
         for (const [type, powerUp] of Object.entries(player.powerUps)) {
             const timeLeft = Math.ceil((powerUp.duration - (Date.now() - powerUp.startTime)) / 1000);
-            ctx.fillText(`${type}: ${timeLeft}s`, 10, y);
-            y += 20;
+            ctx.fillText(`${type}: ${timeLeft}s`, 15, y);
+            y += 15;
         }
         ctx.restore();
     }
 
     renderControls(ctx) {
-        ctx.save();
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        ctx.fillRect(10, GAME_CONFIG.CANVAS_HEIGHT - 60, 200, 50);
-        
-        ctx.fillStyle = '#fff';
-        ctx.font = '12px Arial';
-        ctx.textAlign = 'left';
-        ctx.fillText('WASD: Move | Space: Shoot | ESC: Pause', 15, GAME_CONFIG.CANVAS_HEIGHT - 40);
-        ctx.fillText('Arrow keys also work!', 15, GAME_CONFIG.CANVAS_HEIGHT - 25);
-        ctx.restore();
+        // 完全移除游戏区域内的操作提示，改用HTML元素显示在画面外
     }
 
     renderMinimap(ctx, map, player, enemies) {
+        // 完全移除游戏区域内的小地图，改用HTML元素显示在画面外
+    }
+
+    renderPowerUpEffects(ctx, player) {
+        // 完全移除游戏区域内的道具效果提示，改用HTML元素显示在画面外
+    }
+
+    renderExternalUI(map, player, enemies) {
+        this.renderExternalMinimap(map, player, enemies);
+        this.renderExternalPowerups(player);
+    }
+
+    renderExternalMinimap(map, player, enemies) {
+        const minimapCanvas = document.getElementById('minimapCanvas');
+        if (!minimapCanvas) return;
+        
+        const ctx = minimapCanvas.getContext('2d');
         const minimapSize = 150;
-        const minimapX = GAME_CONFIG.CANVAS_WIDTH - minimapSize - 10;
-        const minimapY = 10;
         const scale = minimapSize / Math.max(map.width * map.tileSize, map.height * map.tileSize);
 
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        ctx.fillRect(minimapX, minimapY, minimapSize, minimapSize);
-
-        ctx.strokeStyle = '#fff';
-        ctx.strokeRect(minimapX, minimapY, minimapSize, minimapSize);
+        ctx.clearRect(0, 0, minimapSize, minimapSize);
+        
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, minimapSize, minimapSize);
+        
+        ctx.strokeStyle = '#666';
+        ctx.strokeRect(0, 0, minimapSize, minimapSize);
 
         for (let y = 0; y < map.height; y++) {
             for (let x = 0; x < map.width; x++) {
@@ -151,8 +163,8 @@ class UI {
                     tileType === GAME_CONFIG.TILE.TYPES.DESTRUCTIBLE_WALL) {
                     ctx.fillStyle = '#666';
                     ctx.fillRect(
-                        minimapX + x * map.tileSize * scale,
-                        minimapY + y * map.tileSize * scale,
+                        x * map.tileSize * scale,
+                        y * map.tileSize * scale,
                         map.tileSize * scale,
                         map.tileSize * scale
                     );
@@ -162,8 +174,8 @@ class UI {
 
         ctx.fillStyle = '#0f0';
         ctx.fillRect(
-            minimapX + player.position.x * scale - 2,
-            minimapY + player.position.y * scale - 2,
+            player.position.x * scale - 2,
+            player.position.y * scale - 2,
             4, 4
         );
 
@@ -171,11 +183,30 @@ class UI {
         for (const enemy of enemies) {
             if (enemy.active) {
                 ctx.fillRect(
-                    minimapX + enemy.position.x * scale - 2,
-                    minimapY + enemy.position.y * scale - 2,
+                    enemy.position.x * scale - 2,
+                    enemy.position.y * scale - 2,
                     4, 4
                 );
             }
+        }
+    }
+
+    renderExternalPowerups(player) {
+        const powerupsContainer = document.getElementById('activePowerups');
+        if (!powerupsContainer) return;
+
+        powerupsContainer.innerHTML = '';
+        
+        if (Object.keys(player.powerUps).length === 0) {
+            powerupsContainer.innerHTML = '<p>无激活道具</p>';
+            return;
+        }
+
+        for (const [type, powerUp] of Object.entries(player.powerUps)) {
+            const timeLeft = Math.ceil((powerUp.duration - (Date.now() - powerUp.startTime)) / 1000);
+            const div = document.createElement('div');
+            div.textContent = `${type}: ${timeLeft}秒`;
+            powerupsContainer.appendChild(div);
         }
     }
 }

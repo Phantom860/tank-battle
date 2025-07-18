@@ -234,9 +234,10 @@ class Game {
             }
         }
 
-        this.ui.renderPowerUpEffects(this.ctx, this.player);
-        this.ui.renderMinimap(this.ctx, this.map, this.player, this.enemies);
-        this.ui.renderControls(this.ctx);
+        // 渲染外部UI元素
+        if (this.player) {
+            this.ui.renderExternalUI(this.map, this.player, this.enemies);
+        }
     }
 
     spawnPowerUps() {
