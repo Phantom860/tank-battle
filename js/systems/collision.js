@@ -53,43 +53,8 @@ class CollisionSystem {
     }
 
     checkTankCollisions(game) {
-        const allTanks = [...this.tanks, ...this.enemies];
-
-        for (let i = 0; i < allTanks.length; i++) {
-            for (let j = i + 1; j < allTanks.length; j++) {
-                const tank1 = allTanks[i];
-                const tank2 = allTanks[j];
-
-                if (!tank1.active || !tank2.active) continue;
-
-                if (checkCollision(tank1.getBounds(), tank2.getBounds())) {
-                    this.resolveTankCollision(tank1, tank2);
-                }
-            }
-        }
-    }
-
-    resolveTankCollision(tank1, tank2) {
-        const center1 = tank1.getCenterPosition();
-        const center2 = tank2.getCenterPosition();
-        const distance = center1.distance(center2);
-        const minDistance = (tank1.width + tank2.width) / 2;
-
-        if (distance < minDistance && distance > 0) {
-            const overlap = minDistance - distance;
-            const direction = center2.subtract(center1).normalize();
-
-            const move1 = direction.multiply(overlap * 0.5);
-            const move2 = direction.multiply(overlap * -0.5);
-
-            tank1.position = tank1.position.add(move1);
-            tank2.position = tank2.position.add(move2);
-
-            tank1.position.x = clamp(tank1.position.x, 0, GAME_CONFIG.CANVAS_WIDTH - tank1.width);
-            tank1.position.y = clamp(tank1.position.y, 0, GAME_CONFIG.CANVAS_HEIGHT - tank1.height);
-            tank2.position.x = clamp(tank2.position.x, 0, GAME_CONFIG.CANVAS_WIDTH - tank2.width);
-            tank2.position.y = clamp(tank2.position.y, 0, GAME_CONFIG.CANVAS_HEIGHT - tank2.height);
-        }
+        // 坦克之间允许重叠，不再进行碰撞分离
+        // 这样可以避免重叠时的抽搐现象
     }
 
     checkPowerUpCollisions(game) {

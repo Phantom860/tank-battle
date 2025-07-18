@@ -216,14 +216,16 @@ class Game {
             powerUp.render(this.ctx);
         }
 
-        if (this.player && this.player.active) {
-            this.player.render(this.ctx);
-        }
-
+        // 先渲染敌人坦克（底层）
         for (const enemy of this.enemies) {
             if (enemy.active) {
                 enemy.render(this.ctx);
             }
+        }
+
+        // 最后渲染玩家坦克（确保在最上层）
+        if (this.player && this.player.active) {
+            this.player.render(this.ctx);
         }
 
         for (const bullet of this.bullets) {
